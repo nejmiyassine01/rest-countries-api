@@ -6,8 +6,7 @@ import {
   CountryCardWrapper,
 } from './CountryCard.style';
 
-const CountryCard = ({ countries }) => {
-  console.log(countries);
+const CountryCard = ({ countries, searchCountry, search }) => {
   return (
     <CountryCardWrapper>
       {countries.length &&
@@ -15,6 +14,7 @@ const CountryCard = ({ countries }) => {
           <CountryCardContainer
             to={`/country/${country.name}`}
             key={country.name}
+            id={country.code}
           >
             <CountryCardImage>
               <img src={country.flag} alt={country.name} />

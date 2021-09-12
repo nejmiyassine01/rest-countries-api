@@ -17,7 +17,15 @@ const App = () => {
 
   // Data Countries
   const [countries, setCountries] = useState([]);
+  const [search, setSearch] = useState('');
+  const [filterParam, setFilterParam] = useState(['All']);
+  const [searchParam] = useState(['capital', 'name']);
+
   const url = 'https://restcountries.eu/rest/v2/';
+
+  const handleChange = (e) => setSearch(e.target.value);
+
+  const handleSelectChange = (e) => setFilterParam(e.target.value);
 
   const getAllCountries = async () => {
     try {
@@ -33,6 +41,33 @@ const App = () => {
     getAllCountries();
   }, []);
 
+  const searchCountry = (countries) => {
+    // eslint-disable-next-line array-callback-return
+    return countries.filter((country) => {
+      if (country.region === filterParam) {
+        return searchParam.some((newCountry) => {
+          return (
+            country[newCountry]
+              .toString()
+              .toLowerCase()
+              .indexOf(search.toLowerCase()) > -1
+          );
+        });
+      } else if (filterParam === 'All') {
+        return searchParam.some((newCountry) => {
+          return (
+            country[newCountry]
+              .toString()
+              .toLowerCase()
+              .indexOf(search.toLowerCase()) > -1
+          );
+        });
+      }
+    });
+  };
+
+  // console.log(searchCountry(countries));
+
   return (
     <ThemeProvider theme={themeMode}>
       <div>
@@ -40,9 +75,17 @@ const App = () => {
         <Header theme={theme} themeToggler={themeToggler} />
         <Switch>
           <Route exact path='/'>
-            <Home countries={countries} />
+            <Home
+              search={search}
+              handleChange={handleChange}
+              searchCountry={searchCountry}
+              handleSelectChange={handleSelectChange}
+              countries={countries}
+            />
           </Route>
-          <Route exact path='/country/:id' component={Countries} />
+          <Route exact path='/country/:name'>
+            <Countries countries={countries} />
+          </Route>
         </Switch>
       </div>
     </ThemeProvider>

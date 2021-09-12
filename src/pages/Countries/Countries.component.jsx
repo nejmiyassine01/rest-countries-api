@@ -1,9 +1,10 @@
 import React from 'react';
+import AboutCountry from '../../components/AboutCountry/AboutCountry.component';
 
-const Country = () => {
+const Country = ({ countries }) => {
   return (
     <div>
-      <h2>Countries</h2>
+      <AboutCountry countries={countries} />
     </div>
   );
 };
